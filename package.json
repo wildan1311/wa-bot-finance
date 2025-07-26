@@ -1,0 +1,41 @@
+{
+  "name": "wa-bot",
+  "version": "1.0.0",
+  "description": "A WhatsApp bot that responds to finance-related messages and logs them into a spreadsheet. Integrated with n8n for real-time automation and tracking.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "start": "nodemon ./dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wa",
+    "finance",
+    "log",
+    "spreadsheet",
+    "n8n",
+    "automation"
+  ],
+  "author": "wildan",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
+    "@google/genai": "^1.9.0",
+    "@google/generative-ai": "^0.24.1",
+    "@langchain/core": "^0.3.65",
+    "@langchain/google-genai": "^0.2.15",
+    "dotenv": "^17.2.0",
+    "googleapis": "^105.0.0",
+    "langchain": "^0.3.30",
+    "node-cron": "^4.2.1",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.31.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
