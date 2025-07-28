@@ -1,5 +1,5 @@
 import { FormattedChat } from "../types/types";
-import { service } from "./sheets-api-service.ts";
+import { sheets } from "./google-api-service.ts";
 
 const SHEET_ID = '1cZ1fbrUiNvfKReIsFxfP4nldsjPVHfOuCo9Le_eo9W0';
 
@@ -14,7 +14,7 @@ const writeSheet = async (data: FormattedChat | FormattedChat[]): Promise<string
     console.log({values})
 
     try {
-        service.spreadsheets.values.append({
+        sheets.spreadsheets.values.append({
             spreadsheetId: SHEET_ID,
             range: 'Sheet1!B:F', // Mulai dari baris ke-2 ke bawah
             valueInputOption: 'USER_ENTERED',
@@ -32,7 +32,7 @@ const writeSheet = async (data: FormattedChat | FormattedChat[]): Promise<string
 
 const createSpreadsheet = async (title: string): Promise<string> => {
     try {
-        const response = await service.spreadsheets.create({
+        const response = await sheets.spreadsheets.create({
             requestBody: {
                 properties: {
                     title: title

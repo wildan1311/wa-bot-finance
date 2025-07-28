@@ -6,12 +6,11 @@ import { financeTrack } from './libs/finance.ts';
 import dotenv from 'dotenv';
 import CUSTOMERS from './const/customers.ts';
 
-
-
 dotenv.config();
 
 const client = new Client({
     puppeteer: {
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
     },
     authStrategy: new LocalAuth()

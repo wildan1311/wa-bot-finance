@@ -6,7 +6,7 @@ const writeSheetTool = tool<any, any>(
     async (data: FormatedChatArray) => {
         console.log({data});
         const sheets = await writeSheet(data.data);
-        return "Data has been successfully written to Google Sheets. You can view it here: " + sheets;
+        return `🎉🎉 Selamat 🎉🎉 \n\n Data kamu telah berhasil ditulis ke Google Sheets. \n\n Berikut adalah data yang telah ditulis: \n\n ${JSON.stringify(data.data, null, 2)} \n\n Jika ada yang ingin ditambahkan atau diubah, silakan beritahu saya. \n\n Terima kasih atas kerjasamanya! \n\n Untuk melihat data di Google Sheets, silakan kunjungi: ${sheets}`;
     },
     {
         name: 'write_sheet',
