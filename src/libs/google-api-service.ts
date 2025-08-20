@@ -5,9 +5,9 @@ import { GoogleAuth } from 'google-auth-library';
 const auth = new GoogleAuth({
   keyFile: path.join(process.cwd(), 'service.json'),
   scopes: [
-    'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/drive.file',
+    'https://www.googleapis.com/auth/spreadsheets',
   ],
 });
 

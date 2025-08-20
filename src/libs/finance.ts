@@ -1,8 +1,5 @@
 import { Chat, Contact, Message } from "whatsapp-web.js";
-// import formatedChat from "./formated-chat";
-// import { extractText } from "./gemini";
 import CUSTOMERS from "../const/customers.ts";
-// import { writeSheet } from "./sheet-service";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { systemPrompt } from "../const/prompt.ts";
@@ -28,7 +25,6 @@ const financeTrack = async (message:Message) => {
                 const output = await agentResponse(message.body, contact);
 
                 chat.sendMessage(output || "Mohon maaf, untuk saat ini service belum bisa berjalan dengan baik.");
-                console.log('Data written successfully');
             }
         }
     }
@@ -46,12 +42,13 @@ const isAvailableGroupChatId = (chat: Chat, groupId: string): boolean => {
 const agentResponse = async (message: string, contact: Contact) => {
     const llm = new ChatGoogleGenerativeAI({
       model: "gemini-2.0-flash",
-      temperature: 0,
+      temperature: 0.5,
       apiKey: process.env.GEMINI_API_KEY,
     });
 
     const prompt = ChatPromptTemplate.fromMessages([
       ["system", systemPrompt],
+      ["placeholder", "{chat_history}"],
       ["human", "saya {name}, {input}"],
       ["placeholder", "{agent_scratchpad}"],
     ]);

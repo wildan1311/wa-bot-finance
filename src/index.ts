@@ -11,7 +11,7 @@ dotenv.config();
 const client = new Client({
     puppeteer: {
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
     },
     authStrategy: new LocalAuth()
 });
@@ -31,17 +31,29 @@ client.on('qr', (qr: string) => {
     console.log('QR Code received, scan it!');
 });
 
-client.on('message_create', async (message:Message) => {
-	if (message.body === '!ping') {
-        message.body = 'saya wildan, @6285706015892 25 July 2025 beli matcha 50000, ayam 16000, parkir 3000';
-        await financeTrack(message);
+// client.on('message_create', async (message:Message) => {
+// 	if (message.body === '!ping') {
+//         try {
+//             await createSpreadsheet("Test Spreadsheet");
+//         } catch (error) {
+//             console.error('Error processing ping message:', error);
+//         }
+//         // message.body = 'saya wildan, @6285706015892 beli matcha 50000, ayam 16000, parkir 3000';
+//         // await financeTrack(message);
 
-		client.sendMessage(message.from, 'Hi, i trying using whastapp bot on my phone');
-	}
-});
+// 		// client.sendMessage(message.from, 'Hi, i trying using whastapp bot on my phone');
+// 	}
+// });
 
 client.on('message', async (message:Message) => {
-    await financeTrack(message);
+    try {
+        await financeTrack(message);
+    } catch (error: any) {
+        console.error('Error processing message:', error);
+        const chat = await message.getChat();
+        chat.sendMessage("Maaf, terjadi kesalahan saat memproses pesan Anda. Silakan coba lagi nanti.");
+        client.sendMessage('6285706015892@c.us', `Error processing message: ${error.message}`);
+    }
 });
 
 client.on('disconnected', (reason) => {
@@ -61,3 +73,14 @@ client.on('change_state', (state) => {
 
 // Start your client
 client.initialize();
+
+process.on('SIGTERM', async () => {
+  console.log('[SIGNAL] SIGTERM diterima. Menutup aplikasi...');
+
+  client.destroy(); // Hentikan client WhatsApp
+  console.log('Client WhatsApp telah dihentikan.');
+
+  process.exit(0); // keluar normal
+});
+
+// console.log(createSpreadsheet("Test Spreadsheet"));
