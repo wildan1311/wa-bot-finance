@@ -1,5 +1,5 @@
 import { FormattedChat } from "../types/types";
-import { sheets } from "./google-api-service.ts";
+import { drive, sheets } from "./google-api-service.ts";
 
 const SHEET_ID = '1cZ1fbrUiNvfKReIsFxfP4nldsjPVHfOuCo9Le_eo9W0';
 
@@ -30,18 +30,17 @@ const writeSheet = async (data: FormattedChat | FormattedChat[]): Promise<string
     }
 }
 
-const createSpreadsheet = async (title: string): Promise<string> => {
+const createSpreadsheet = async (title: string): Promise<void> => {
     try {
+        console.log('Creating spreadsheet with title:', title);
         const response = await sheets.spreadsheets.create({
             requestBody: {
                 properties: {
-                    title: title
+                    title: 'test'
                 }
             }
         });
-        const spreadsheetId = response.data.spreadsheetId;
-        console.log(`Spreadsheet created with ID: ${spreadsheetId}`);
-        return `https://docs.google.com/spreadsheets/d/${spreadsheetId}`;
+        console.log('Spreadsheet created successfully:', response.data);
     } catch (error) {
         console.error('Error creating spreadsheet:', error);
         throw error;
